@@ -1,6 +1,6 @@
 @echo off
 
 
-VBoxManage list hdds > c:\users\public\tmp\prueba3.txt
+VBoxManage list hdds > c:\users\public\tmp\listadoDeDiscos.txt
 exit
 
