@@ -14,7 +14,7 @@ public class ScriptsActions {
 	public void listVdi() {
 		try {
 			File dir = new File(constantes.getDIR_VIRTUAL_BOX());
-			p = Runtime.getRuntime().exec("cmd /c start "+constantes.getLIST_HDDS(), null, dir);
+			p = Runtime.getRuntime().exec("cmd /c start /B " + constantes.getLIST_HDDS() + " &", null, dir);
 			System.out.println("Creado listados de discos correctamente.");
 		} catch (IOException e) {
 			System.out.println("Error obteniendo la lista de discos virtuales: "+e.getMessage());

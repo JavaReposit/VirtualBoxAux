@@ -92,7 +92,10 @@ public class MainWindow extends JFrame {
 	public void inicializarComponentes() {		
 		if (temporalPath.copyScripts()) {
 			try {
+				LoadingFrame lf = new LoadingFrame();
+				lf.setVisible(true);
 				Thread.sleep(5000);
+				lf.cerrarFrame();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
