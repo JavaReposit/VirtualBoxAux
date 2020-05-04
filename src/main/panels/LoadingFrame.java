@@ -1,61 +1,81 @@
 package main.panels;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JProgressBar;
+import javax.swing.border.BevelBorder;
 
 public class LoadingFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
+	private JTextArea TALoading;
+	private JProgressBar progressBar;
+	private String[] loadingMessages = new String[4];
 	
 
 	/**
 	 * Create the frame.
 	 */
 	public LoadingFrame() {
+		loadingMessages = messages(loadingMessages.length);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 254);
 		setTitle("Loading...");
 		setLocationRelativeTo(null);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		
 		setContentPane(contentPane);
 		
-		JLabel lbLoading = new JLabel("New label");
-		contentPane.add(lbLoading, BorderLayout.CENTER);
+		getContentPane().setLayout(null);
 		
-		for (int i = 0; i < 15; i++) {
-			lbLoading.setText(refrescarLabel(i));
+		progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		progressBar.setBounds(87, 30, 250, 26);
+		contentPane.add(progressBar);
+		
+		TALoading= new JTextArea();
+		TALoading.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		TALoading.setOpaque(false);
+		TALoading.setBounds(87, 81, 250, 97);
+		contentPane.add(TALoading);
+	}
+	
+	public void refrescarLabel() {
+		for (int i = 0; i < 5; i++) {
+			try {
+				TimeUnit.SECONDS.sleep(1);
+				progressBar.setValue(i*25);
+				TALoading.append(loadingMessages[i]+"\n");
+				progressBar.setStringPainted(true);
+			} catch (InterruptedException e) { 
+				System.out.println("Procedimiento de carga interrumpido: "+e.getMessage());
+			} catch (Exception e) {
+				System.out.println("La carga de la aplicación se ha visto interrumpida");
+			}
 		}
-		
-		
 	}
 	
 	public void cerrarFrame() {
 		this.dispose();
 	}
 	
-	public String refrescarLabel(int i) {
-		Timer timer = new Timer();
-	    timer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				System.out.println("I would be called every 2 seconds");
-			}
-		}, 0, 2000);
-	    if (i%2 == 0)
-	    	return "Cargando los archivos de configuración....";
-	    else
-	    	return "Actualizando la definición de clases...";
+	public String[] messages(int size) {
+		String[] loadMessages = new String[size];
+		loadMessages[0] = "Comprobando los requisitos ...";
+		loadMessages[1] = "Preparando el entorno de trabajo...";
+		loadMessages[2] = "Copiando los archivos necesarios...";
+		loadMessages[3] = "Recopilando información de VirtualBox...";
+		return loadMessages;
 	}
-
 }

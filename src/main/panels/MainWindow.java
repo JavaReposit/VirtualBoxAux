@@ -36,23 +36,14 @@ public class MainWindow extends JFrame {
 	private DefaultTableModel model;
 	private JScrollPane scrollTable;
 	private JTable vdiTable;
+	private JButton shrinkButton;
+	private JButton enlargeButton;
 
 	/**
 	 * Create the frame.
 	 */
 	public MainWindow() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		        if (JOptionPane.showConfirmDialog(null, 
-		            "Are you sure you want to close this window?", "Close Window?", 
-		            JOptionPane.YES_NO_OPTION,
-		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-		        	temporalPath.deleteTemporalPath();
-		            System.exit(0);
-		        }
-		    }
-		});
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 500);
 		setResizable(false);
@@ -69,6 +60,27 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(fl);
 		
 		vdiTable = new JTable();
+		createVdiTable();
+		
+		shrinkButton = new JButton("Shrink");
+		enlargeButton = new JButton("Enlarge");
+		createButtons();
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		        if (JOptionPane.showConfirmDialog(null, 
+		            "Are you sure you want to close this window?", "Close Window?", 
+		            JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+		        	temporalPath.deleteTemporalPath();
+		            System.exit(0);
+		        }
+		    }
+		});
+	}
+	
+	public void createVdiTable() {		
 		vdiTable.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		scrollTable = new JScrollPane(vdiTable);
 		scrollTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -76,25 +88,11 @@ public class MainWindow extends JFrame {
 		scrollTable.setBounds(10, 10, 200, 100);
 		contentPane.add(scrollTable, BorderLayout.CENTER);
 		
-		inicializarComponentes();
-		
-		JButton button = new JButton("Shrink");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			int pos = vdiTable.getSelectedRow();
-			JOptionPane.showMessageDialog(null, vdiTable.getValueAt(pos, 1));
-			}
-		});
-		contentPane.add(button);
-		contentPane.add(new JButton("Enlarge"));
-	}
-	
-	public void inicializarComponentes() {		
 		if (temporalPath.copyScripts()) {
 			try {
 				LoadingFrame lf = new LoadingFrame();
 				lf.setVisible(true);
-				Thread.sleep(5000);
+				lf.refrescarLabel();
 				lf.cerrarFrame();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -120,6 +118,25 @@ public class MainWindow extends JFrame {
 			String[] row = {String.valueOf(i), vdiList.get(i)}; 
 			model.addRow(row);
 		}
+	}
+	
+	public void createButtons() {
+		contentPane.add(shrinkButton);
+		contentPane.add(enlargeButton);
+		
+		shrinkButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			int pos = vdiTable.getSelectedRow();
+			JOptionPane.showMessageDialog(null, vdiTable.getValueAt(pos, 1));
+			}
+		});
+		
+		enlargeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			int pos = vdiTable.getSelectedRow();
+			JOptionPane.showMessageDialog(null, vdiTable.getValueAt(pos, 1));
+			}
+		});
 	}
 	
 }
