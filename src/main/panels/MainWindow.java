@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 import main.constants.FConstants;
+import main.constants.FMessages;
 import main.functions.ManageTemporalPath;
 import main.functions.FilesActions;
 import main.functions.Utils;
@@ -15,7 +16,11 @@ import main.functions.Utils;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Color;
@@ -29,10 +34,12 @@ public class MainWindow extends JFrame {
 	 * DEFAULT SERIAL ID 
 	 */
 	private static final long serialVersionUID = 1L;
+	private FMessages messages;
 	private JPanel contentPane;
 	private ManageTemporalPath temporalPath = new ManageTemporalPath();
 	private FilesActions fileAction = new FilesActions();;
 	private FConstants constants = new FConstants();
+	private Utils utils = new Utils();
 	private DefaultTableModel model;
 	private JScrollPane scrollTable;
 	private JTable vdiTable;
@@ -43,6 +50,8 @@ public class MainWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public MainWindow() {
+		
+		messages = new FMessages();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 500);
@@ -133,10 +142,20 @@ public class MainWindow extends JFrame {
 		
 		enlargeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			int pos = vdiTable.getSelectedRow();
-			JOptionPane.showMessageDialog(null, vdiTable.getValueAt(pos, 1));
+				try {
+					if (utils.seEstaEjecutantoVirtualBox()) {
+						String msg = messages.getMessage("MG001");
+						JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+ 					} else {
+//						JOptionPane.showMessageDialog(null, messages.getMessage("MG001"), "Información", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Se va a ejecutar el procedimiento.\n Gracias", "Información", JOptionPane.WARNING_MESSAGE);
+					}
+				} catch (Exception err) {
+					System.out.println("Error ejecutando proceso... " + err.getMessage()); 
+				}
 			}
 		});
 	}
+
 	
 }

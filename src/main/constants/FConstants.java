@@ -8,7 +8,7 @@ public class FConstants {
 	private static final String SHRINK_HDDS = "C:\\Users\\Public\\Tmp\\shrinkHdds.bat";
 	private static final String ENLARGE_HDDS = "C:\\Users\\Public\\Tmp\\enlargeHdds.bat";
 	private static final String HDDS_FILE = "listadoDeDiscos.txt";
-
+	private static final String MESSAGES_FILE = "utils\\messages.txt";
 	
 	public String getDIR_VIRTUAL_BOX() {
 		return DIR_VIRTUAL_BOX;
@@ -33,6 +33,9 @@ public class FConstants {
 	public String getHDDS_FILE() {
 		return HDDS_FILE;
 	}
-	
+
+	public String getMESSAGES_FILE() {
+		return MESSAGES_FILE;
+	}
 	
 }

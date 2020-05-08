@@ -1,0 +1,1 @@
+MG001#VirtualBox está en ejecución.\nDebes cerrarlo antes de ejecutar esta opción.

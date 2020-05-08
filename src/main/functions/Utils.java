@@ -1,8 +1,11 @@
 package main.functions;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import main.constants.FConstants;
 
@@ -39,6 +42,18 @@ public class Utils {
 			System.out.println("No se pueden listar los discos virtuales");
 			return false;
 		}
+	}
+	
+	public boolean seEstaEjecutantoVirtualBox() throws IOException {
+		boolean estaEnEjecucion = false;
+		Process process = Runtime.getRuntime().exec("tasklist.exe");
+	    Scanner scanner = new Scanner(new InputStreamReader(process.getInputStream()));
+	    while (scanner.hasNext()) {
+	        if (scanner.nextLine().contains("VirtualBox"))
+	        	estaEnEjecucion = true;
+	    }
+	    scanner.close();
+	    return estaEnEjecucion;
 	}
 	
 
