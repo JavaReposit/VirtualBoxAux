@@ -11,9 +11,11 @@ import javax.swing.JOptionPane;
 
 import main.constants.FConstants;
 import main.constants.FMessages;
+import main.log.AppLogger;
 
 public class Utils {
 	
+	private final AppLogger logger = new AppLogger(Utils.class.getName());
 	private FConstants constants = new FConstants();
 	private ScriptsActions scriptAction = new ScriptsActions();
 	private FMessages messages = FMessages.getInstance();
@@ -40,25 +42,25 @@ public class Utils {
 				scriptAction.listVdi();
 				return true;
 			} catch (Exception e) {
-				System.out.println("Error listando los discos virtuales existentes:\n"+e.getMessage());
+				logger.setErrorLog("Error listando los discos virtuales existentes:\n"+e.getMessage());
 				return false;
 			}
 		} else {
-			System.out.println("No se pueden listar los discos virtuales");
+			logger.setWarningLog("No se pueden listar los discos virtuales");
 			return false;
 		}
 	}
 	
 	public boolean seEstaEjecutantoVirtualBox() throws IOException {
-		boolean estaEnEjecucion = false;
+		boolean enEjecucion = false;
 		Process process = Runtime.getRuntime().exec("tasklist.exe");
 	    Scanner scanner = new Scanner(new InputStreamReader(process.getInputStream()));
 	    while (scanner.hasNext()) {
 	        if (scanner.nextLine().contains("VirtualBox"))
-	        	estaEnEjecucion = true;
+	        	enEjecucion = true;
 	    }
 	    scanner.close();
-	    return estaEnEjecucion;
+	    return enEjecucion;
 	}
 	
 	public void shrinkVdi(String disk) {
@@ -66,9 +68,11 @@ public class Utils {
 			scriptAction.shrinkVdi(disk);
 			msg = messages.getMessage("MG001");
 			JOptionPane.showMessageDialog(null, msg);
+			logger.setInfoLog(msg);
 		} catch (Exception e) {
 			msg = e.getMessage();
 			JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+			logger.setErrorLog(msg);
 		}
 	}
 	

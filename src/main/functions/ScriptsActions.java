@@ -13,7 +13,8 @@ import javax.swing.JOptionPane;
 
 import main.constants.FConstants;
 import main.constants.FMessages;
-//import main.panels.AnimatedGif;
+import main.log.AppLogger;
+
 
 public class ScriptsActions {
 	
@@ -22,7 +23,7 @@ public class ScriptsActions {
 	private File dir = new File(constantes.getDIR_VIRTUAL_BOX());
 	private FMessages messages = FMessages.getInstance();
 	private String msg = messages.getMessage("ERR004");
-//	private final AnimatedGif animatedGif = new AnimatedGif();
+	private final AppLogger logger = new AppLogger(ScriptsActions.class.getName());
 	
 	public void listVdi() {
 		try {
@@ -51,10 +52,10 @@ public class ScriptsActions {
 				bw.flush();
 				bw.close();
 			} catch (IOException e) {
-				System.out.println("Error guardando listado de discos: " + e.getMessage());
+				logger.setWarningLog("Error guardando listado de discos: " + e.getMessage());
 			}
 		} catch (IOException e) {
-			System.out.println("Error obteniendo la lista de discos virtuales: "+e.getMessage());
+			logger.setWarningLog("Error obteniendo la lista de discos virtuales: "+e.getMessage());
 			msg = msg + "\n"+e.getMessage();
 			JOptionPane.showMessageDialog(null, msg);
 		}
@@ -62,8 +63,6 @@ public class ScriptsActions {
 	
 	public void shrinkVdi(String disk) {
 		try {
-//			AnimatedGif gif = new AnimatedGif();
-//			gif.setVisible(true);
 			p = Runtime.getRuntime().exec("cmd /c start /wait " + constantes.getSHRINK_HDDS() + " " +disk, null, dir);
 			p.waitFor();
 //			final List<String> commands = new ArrayList<String>();
@@ -84,13 +83,12 @@ public class ScriptsActions {
 //				builder.append(System.getProperty("line.separator"));
 //			}
 //			p.waitFor();
-//			gif.interrupt();
 		} catch (InterruptedException e) {
-			System.out.println("Proceso interrumpido inesperadamente: "+e.getMessage());
+			logger.setWarningLog("Proceso interrumpido inesperadamente: "+e.getMessage());
 			msg = msg + "\n"+e.getMessage();
 			JOptionPane.showMessageDialog(null, msg);
 		} catch (IOException e) {
-			System.out.println("Error error reduciendo el tamaño del disco virtual: "+e.getMessage());
+			logger.setWarningLog("Error reduciendo el tamaño del disco virtual: "+e.getMessage());
 			msg = msg + "\n"+e.getMessage();
 			JOptionPane.showMessageDialog(null, msg);
 		}
@@ -100,7 +98,7 @@ public class ScriptsActions {
 		try {
 			p = Runtime.getRuntime().exec("cmd /c start " + constantes.getENLARGE_HDDS(), null, dir);
 		} catch (IOException e) {
-			System.out.println("Error ampliando el disco virtual: "+e.getMessage());
+			logger.setWarningLog("Error ampliando el disco virtual: "+e.getMessage());
 			msg = msg + "\n"+e.getMessage();
 			JOptionPane.showMessageDialog(null, msg);
 		}

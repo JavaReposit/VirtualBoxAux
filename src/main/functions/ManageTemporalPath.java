@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import main.constants.FConstants;
+import main.log.AppLogger;
 
 public class ManageTemporalPath {
 	
@@ -17,6 +18,7 @@ public class ManageTemporalPath {
 	private FConstants constants = new FConstants();
 	private FilesActions fileAction = new FilesActions();
 	private Utils utils = new Utils();
+	private final AppLogger logger = new AppLogger(FilesActions.class.getName());
 	
 	
 	public boolean copyScripts() {
@@ -28,37 +30,37 @@ public class ManageTemporalPath {
 					Path origen = FileSystems.getDefault().getPath(f.toString());
 					Path destino = FileSystems.getDefault().getPath(temporalPath.toString()+"\\"+f.getName());
 					Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
-					System.out.println("Fichero " + f.getName() + " creado.");
+					logger.setInfoLog("Fichero " + f.getName() + " creado.");
 				} catch (FileNotFoundException e) {
-					System.out.println("No se ha encontrado el fichero: " + f.getName() +"\nError: "+ e.getMessage());
+					logger.setWarningLog("No se ha encontrado el fichero: " + f.getName() +"\nError: "+ e.getMessage());
 				} catch (IOException e) {
-					System.out.println("Error I/O con el fichero: " + f.getName() +"\nError: "+ e.getMessage());
+					logger.setWarningLog("Error I/O con el fichero: " + f.getName() +"\nError: "+ e.getMessage());
 				}
 			}
 			utils.findVdi();
 			return true;
 		} else {
-			System.out.println("No existe el directorio de trabajo.");
+			logger.setWarningLog("No existe el directorio de trabajo.");
 			return false;
 		}
 	}
 	
 	public boolean newTemporalPath(Path workPath) {
-		System.out.println("directorio de trabajo: "+workPath.toString());
+		logger.setInfoLog("directorio de trabajo: "+workPath.toString());
 		if (Files.notExists(workPath)) {
 			try {
 				Files.createDirectory(Paths.get(workPath.toString()));
-					System.out.println("directorio creado");
-					return true; 
+				logger.setInfoLog("directorio creado");
+				return true; 
 			} catch (SecurityException e) {
-				System.out.println("Error1: "+e.getMessage());
+				logger.setErrorLog("Error1: "+e.getMessage());
 				return false;
 			} catch (IOException e) {
-				System.out.println("Error2: "+e.getMessage());
+				logger.setErrorLog("Error2: "+e.getMessage());
 				return false;
 			}
 		} else {
-			System.out.println("Ya existe el directorio");
+			logger.setWarningLog("Ya existe el directorio");
 			return true;
 		}		
 	}
@@ -73,14 +75,12 @@ public class ManageTemporalPath {
 			errors = e.getMessage();
 		}
 		if (errors.contentEquals("")) {
-			System.out.println("Directorio de trabajo eliminado correctamente..."); 
+			logger.setInfoLog("Directorio de trabajo eliminado correctamente..."); 
 		} else {
-			System.out.println("El directorio de trabajo no se ha podido eliminar correctamente."
+			logger.setWarningLog("El directorio de trabajo no se ha podido eliminar correctamente."
 					+ "\nPuede ser necesario eliminarlo manualmente."
 					+ "\nErrores registrados:\n"+errors);
 		}
 	}
-	
-	
 	
 }

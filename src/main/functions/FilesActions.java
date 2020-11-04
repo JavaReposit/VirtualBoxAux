@@ -10,12 +10,15 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import main.log.AppLogger;
+
 
 public class FilesActions {
 	
 	private File file = null;
 	private FileReader fr = null;
 	private BufferedReader br = null;
+	private final AppLogger logger = new AppLogger(FilesActions.class.getName());
 	
 	public ArrayList<String> readFile(String fileName) {
 		
@@ -27,19 +30,19 @@ public class FilesActions {
 			br = new BufferedReader(fr);
 			String linea;
 			int i = 0;
-			System.out.println("Leyendo fichero de discos:");
+			logger.setInfoLog("Leyendo fichero de discos:");
 			while((linea=br.readLine())!=null) {
 				fileLines.add(linea);
 				i++;
 			}
 			if (fileLines.size() > 0) {
-				System.out.println("líneas totales leidas: "+String.valueOf(i));
+				logger.setInfoLog("líneas totales leidas: "+String.valueOf(i));
 				return fileLines;
 			} else {
 				return null;
 			}
 		} catch(Exception e){
-			e.printStackTrace();
+			logger.setErrorLog(e.getMessage());
 			return null;
 		} finally {
 			try{
@@ -47,7 +50,7 @@ public class FilesActions {
 					fr.close();
 				}
 			}catch (Exception e2){ 
-		        e2.printStackTrace();
+				logger.setErrorLog(e2.getMessage());
 			}
 		}
 	}
@@ -56,19 +59,19 @@ public class FilesActions {
 		String errors = "";
 		for (File f: filesToDelete) {
 			Path p = FileSystems.getDefault().getPath(f.toString());
-			System.out.println("Borrando archivo " + p.toString());
+			logger.setInfoLog("Borrando archivo " + p.toString());
 			try {
 				Files.delete(p);
-				System.out.println("Archivo borrado.");
+				logger.setInfoLog("Archivo " + p.toString() + " borrado.");
 			} catch (NoSuchFileException e) {
 				if (errors.contentEquals("")) {
 					errors += e.getMessage(); 
 				} else {
 					errors += "\n"+e.getMessage();
 				}
-				System.out.println("No se ha encontrado el archivo: " + e.getMessage());
+				logger.setWarningLog("No se ha encontrado el archivo: " + e.getMessage());
 			} catch (IOException e) {
-				System.out.println("Error I/O borrando el archivo " + e.getMessage());
+				logger.setErrorLog("Error I/O borrando el archivo " + e.getMessage());
 				if (errors.contentEquals("")) {
 					errors += e.getMessage(); 
 				} else {
@@ -82,11 +85,11 @@ public class FilesActions {
 	public String deletePath (Path path) {
 		String errors = "";
 		try {
-			System.out.println("Borrando el directorio de trabajo...");
+			logger.setInfoLog("Borrando el directorio de trabajo...");
 			Files.delete(path);
-			System.out.println("Directorio borrado.");
+			logger.setInfoLog("Directorio "+path.toString()+" borrado.");
 		} catch (IOException e) {
-			System.out.println("Error I/O directorio el directorio " + e.getMessage());
+			logger.setErrorLog("Error I/O directorio el directorio " + e.getMessage());
 			if (errors.contentEquals("")) {
 				errors += e.getMessage(); 
 			} else {

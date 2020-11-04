@@ -5,6 +5,9 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import main.log.AppLogger;
+
 import javax.swing.JTextArea;
 import javax.swing.JProgressBar;
 import javax.swing.border.BevelBorder;
@@ -12,6 +15,7 @@ import javax.swing.border.BevelBorder;
 public class LoadingFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private final AppLogger logger = new AppLogger(LoadingFrame.class.getName());
 	private JPanel contentPane;
 	private JTextArea TALoading;
 	private JProgressBar progressBar;
@@ -58,9 +62,9 @@ public class LoadingFrame extends JFrame {
 				TALoading.append(loadingMessages[i]+"\n");
 				progressBar.setStringPainted(true);
 			} catch (InterruptedException e) { 
-				System.out.println("Procedimiento de carga interrumpido: "+e.getMessage());
+				logger.setWarningLog("Procedimiento de carga interrumpido: "+e.getMessage());
 			} catch (Exception e) {
-				System.out.println("La carga de la aplicación se ha visto interrumpida");
+				logger.setWarningLog("La carga de la aplicación se ha visto interrumpida");
 			}
 		}
 	}

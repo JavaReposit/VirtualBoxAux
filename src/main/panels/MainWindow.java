@@ -1,6 +1,5 @@
 package main.panels;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,6 +14,7 @@ import main.constants.FMessages;
 import main.functions.ManageTemporalPath;
 import main.functions.FilesActions;
 import main.functions.Utils;
+import main.log.AppLogger;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -24,13 +24,10 @@ import java.util.ArrayList;
 
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
@@ -55,6 +52,7 @@ public class MainWindow extends JFrame {
 	private JButton refreshButton;
 	private String msg;
 	private NumberFormat nf = NumberFormat.getInstance();
+	private final AppLogger logger = new AppLogger(MainWindow.class.getName());
 	
 	/**
 	 * Create the frame.
@@ -139,6 +137,7 @@ public class MainWindow extends JFrame {
 		} catch (Exception e) {
 			msg = e.getMessage();
 			JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+			logger.setErrorLog(msg);
 		}
 		
 	}
@@ -189,17 +188,20 @@ public class MainWindow extends JFrame {
 				if (pos < 0) {
 					msg = messages.getMessage("ERR002");
 					JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+					logger.setErrorLog(msg);
 				} else {
 					try {
 						if (utils.seEstaEjecutantoVirtualBox()) {
 							msg = messages.getMessage("ERR003");
 							JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+							logger.setErrorLog(msg);
 						} else {
 							String disk = vdiTable.getValueAt(pos, 1).toString();
 							utils.shrinkVdi(disk);
 						}
 					} catch (HeadlessException | IOException err) {
 						err.printStackTrace();
+						logger.setErrorLog(err.getMessage());
 					}				
 				}			
 			}
@@ -211,17 +213,21 @@ public class MainWindow extends JFrame {
 				if ( pos < 0) {
 					msg = messages.getMessage("ERR002");
 					JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+					logger.setErrorLog(msg);
 				} else {
 					try {
 						if (utils.seEstaEjecutantoVirtualBox()) {
 							msg = messages.getMessage("ERR003");
 							JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+							logger.setErrorLog(msg);
 	 					} else {
 	 						msg = messages.getMessage("MG002");
 							JOptionPane.showMessageDialog(null, msg, "Lista actualizada", JOptionPane.INFORMATION_MESSAGE);
+							logger.setInfoLog(msg);
 						}
 					} catch (Exception err) {
 						System.out.println("Error ejecutando proceso... " + err.getMessage()); 
+						logger.setErrorLog(msg);
 					}
 				}
 			}
@@ -232,6 +238,7 @@ public class MainWindow extends JFrame {
 				if (vdiTable.getRowCount() > 0) {
 					model.setRowCount(0);
 					refreshVdiList();
+					logger.setInfoLog("lista actualizada");
 				} 
 			}
 		});
