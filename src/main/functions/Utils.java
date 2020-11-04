@@ -7,12 +7,17 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import main.constants.FConstants;
+import main.constants.FMessages;
 
 public class Utils {
 	
 	private FConstants constants = new FConstants();
 	private ScriptsActions scriptAction = new ScriptsActions();
+	private FMessages messages = FMessages.getInstance();
+	private String msg;
 	
 	public ArrayList<String> cleanListVdis(ArrayList<String> vdis) {
 		ArrayList<String> Aux = new ArrayList<>();
@@ -54,6 +59,17 @@ public class Utils {
 	    }
 	    scanner.close();
 	    return estaEnEjecucion;
+	}
+	
+	public void shrinkVdi(String disk) {
+		try {
+			scriptAction.shrinkVdi(disk);
+			msg = messages.getMessage("MG001");
+			JOptionPane.showMessageDialog(null, msg);
+		} catch (Exception e) {
+			msg = e.getMessage();
+			JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 

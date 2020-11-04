@@ -1,15 +1,10 @@
 package main.panels;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JProgressBar;
 import javax.swing.border.BevelBorder;
@@ -28,6 +23,10 @@ public class LoadingFrame extends JFrame {
 	 */
 	public LoadingFrame() {
 		loadingMessages = messages(loadingMessages.length);
+		createCompleteFrame();
+	}
+	
+	private void createCompleteFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 254);
 		setTitle("Loading...");
@@ -51,7 +50,7 @@ public class LoadingFrame extends JFrame {
 		contentPane.add(TALoading);
 	}
 	
-	public void refrescarLabel() {
+	public void refreshLabel() {
 		for (int i = 0; i < 5; i++) {
 			try {
 				TimeUnit.SECONDS.sleep(1);
@@ -66,8 +65,8 @@ public class LoadingFrame extends JFrame {
 		}
 	}
 	
-	public void cerrarFrame() {
-		this.dispose();
+	public void closeFrame() {
+		dispose();
 	}
 	
 	public String[] messages(int size) {

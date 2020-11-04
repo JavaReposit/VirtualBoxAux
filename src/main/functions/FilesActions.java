@@ -95,5 +95,15 @@ public class FilesActions {
 		}
 		return errors;
 	}
+	
+	public long getFileSize(String file) {
+		long size = 0;
+		File f = new File(file);
+		if (f.exists()) {
+			size = f.length();
+		}
+				
+		return size;
+	}
 
 }

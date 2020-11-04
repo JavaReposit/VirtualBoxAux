@@ -1,1 +1,7 @@
-MG001#VirtualBox está en ejecución.\nDebes cerrarlo antes de ejecutar esta opción.
+MG001#EL proceso se ha ejecutado correctamente.
+MG002#Se va a ejecutar el procedimiento solicitado.
+MG003#Lista de discos actualizada correctamente.
+ERR001#<html>No se ha encontrado el archivo seleccionado: <br></html>
+ERR002#<html>No ha seleccionado ningún disco.<br>Para ejecutar este procedimiento debe seleccionar un disco.<html>
+ERR003#<html>VirtualBox está en ejecución.<br/>Debes cerrarlo antes de ejecutar esta opción.</html>
+ERR004#No se ha ejecutado el proceso correctamente.

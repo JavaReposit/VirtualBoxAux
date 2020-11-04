@@ -1,10 +1,13 @@
 package main.panels;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import main.constants.FConstants;
@@ -14,19 +17,23 @@ import main.functions.FilesActions;
 import main.functions.Utils;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
 public class MainWindow extends JFrame {
 
@@ -45,35 +52,24 @@ public class MainWindow extends JFrame {
 	private JTable vdiTable;
 	private JButton shrinkButton;
 	private JButton enlargeButton;
-
+	private JButton refreshButton;
+	private String msg;
+	private NumberFormat nf = NumberFormat.getInstance();
+	
 	/**
 	 * Create the frame.
 	 */
 	public MainWindow() {
 		
-		messages = new FMessages();
+		messages = FMessages.getInstance();
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 500);
-		setResizable(false);
-		setTitle("Virtual Box Auxiliar");
-		setLocationRelativeTo(null);
+		createWindow();
 		
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.GRAY);
-		setContentPane(contentPane);
-		FlowLayout fl = new FlowLayout();
-		fl.setAlignment(FlowLayout.CENTER);
-		fl.preferredLayoutSize(this);
-		
-		contentPane.setLayout(fl);
-		
-		vdiTable = new JTable();
 		createVdiTable();
 		
-		shrinkButton = new JButton("Shrink");
-		enlargeButton = new JButton("Enlarge");
 		createButtons();
+		getContentPane().setLayout(null);
+		
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -84,78 +80,172 @@ public class MainWindow extends JFrame {
 		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 		        	temporalPath.deleteTemporalPath();
 		            System.exit(0);
-		        }
+		        } 
 		    }
 		});
 	}
 	
-	public void createVdiTable() {		
+	private void createWindow() {
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setBounds(100, 100, 610, 471);
+		setResizable(false);
+		setTitle("VirtualBox Auxiliar");
+		setLocationRelativeTo(null);
+		
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.GRAY);
+		setContentPane(contentPane);
+	}
+	
+	private void createVdiTable() {
+		vdiTable = new JTable();
+		vdiTable.setIntercellSpacing(new Dimension(15, 1));
 		vdiTable.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		scrollTable = new JScrollPane(vdiTable);
 		scrollTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollTable.setBounds(10, 10, 200, 100);
+		scrollTable.setBounds(26, 11, 550, 323);
 		contentPane.add(scrollTable, BorderLayout.CENTER);
 		
 		if (temporalPath.copyScripts()) {
 			try {
-				LoadingFrame lf = new LoadingFrame();
-				lf.setVisible(true);
-				lf.refrescarLabel();
-				lf.cerrarFrame();
+				generateLoadingFrame();
+				generateVdiList();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+		}		
+	}
+	
+	private void generateLoadingFrame() {
+		LoadingFrame lf = new LoadingFrame();
+		lf.setVisible(true);
+		lf.refreshLabel();
+		lf.closeFrame();
+	}
+	
+	private void refreshVdiList() {
+		try {
+			utils.findVdi();
 			ArrayList<String> vdis = fileAction.readFile(constants.getDIR_TEMPORAL()+"\\"+constants.getHDDS_FILE());			
 			if (!vdis.isEmpty()) {
-				Utils utils = new Utils();
 				ArrayList<String> vdiList = utils.cleanListVdis(vdis);
 				if (!vdiList.isEmpty()) {
 					fillTable(vdiList);
 				}
 			}
-		}		
+			msg = messages.getMessage("MG003");
+			JOptionPane.showMessageDialog(null, msg, "Información", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {
+			msg = e.getMessage();
+			JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
-	public void fillTable(ArrayList<String> vdiList) {		
+	private void generateVdiList() {
+		utils.findVdi();
+		ArrayList<String> vdis = fileAction.readFile(constants.getDIR_TEMPORAL()+"\\"+constants.getHDDS_FILE());			
+		if (!vdis.isEmpty()) {
+			ArrayList<String> vdiList = utils.cleanListVdis(vdis);
+			if (!vdiList.isEmpty()) {
+				fillTable(vdiList);
+			}
+		}
+	}
+	
+	private void fillTable(ArrayList<String> vdiList) {		
 		model = (DefaultTableModel) vdiTable.getModel();
-		String colsTitle[] = {"##", "VIRTUAL HDD"};
+		RightTableCellRenderer rightRender = new RightTableCellRenderer();
+		String colsTitle[] = {"##", "VIRTUAL HDD", "Size (Mbs)"};
 		model.setColumnIdentifiers(colsTitle);
 		vdiTable.getColumnModel().getColumn(0).setPreferredWidth(20);
 		vdiTable.getColumnModel().getColumn(1).setPreferredWidth(350);
+		vdiTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+		vdiTable.getColumnModel().getColumn(2).setCellRenderer(rightRender);
+		vdiTable.getColumnModel().getColumn(2);
 		for (int i = 0; i< vdiList.size(); i++ ) {
-			String[] row = {String.valueOf(i), vdiList.get(i)}; 
+			String fileName = vdiList.get(i);
+			String fileSize = nf.format(fileAction.getFileSize(vdiList.get(i))/1024000);
+			String[] row = {String.valueOf(i+1), fileName, fileSize}; 
 			model.addRow(row);
 		}
 	}
 	
-	public void createButtons() {
+	private void createButtons() {
+		shrinkButton = new JButton("Shrink");
 		contentPane.add(shrinkButton);
+		shrinkButton.setBounds(91, 375, 89, 23);
+		enlargeButton = new JButton("Enlarge");
 		contentPane.add(enlargeButton);
+		enlargeButton.setBounds(260, 375, 89, 23);
+		refreshButton = new JButton("Refresh");
+		contentPane.add(refreshButton);
+		refreshButton.setBounds(421, 375, 89, 23);
 		
 		shrinkButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			int pos = vdiTable.getSelectedRow();
-			JOptionPane.showMessageDialog(null, vdiTable.getValueAt(pos, 1));
+				int pos = vdiTable.getSelectedRow();
+				if (pos < 0) {
+					msg = messages.getMessage("ERR002");
+					JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					try {
+						if (utils.seEstaEjecutantoVirtualBox()) {
+							msg = messages.getMessage("ERR003");
+							JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+						} else {
+							String disk = vdiTable.getValueAt(pos, 1).toString();
+							utils.shrinkVdi(disk);
+						}
+					} catch (HeadlessException | IOException err) {
+						err.printStackTrace();
+					}				
+				}			
 			}
 		});
 		
 		enlargeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					if (utils.seEstaEjecutantoVirtualBox()) {
-						String msg = messages.getMessage("MG001");
-						JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
- 					} else {
-//						JOptionPane.showMessageDialog(null, messages.getMessage("MG001"), "Información", JOptionPane.WARNING_MESSAGE);
-						JOptionPane.showMessageDialog(null, "Se va a ejecutar el procedimiento.\n Gracias", "Información", JOptionPane.WARNING_MESSAGE);
+				int pos = vdiTable.getSelectedRow();
+				if ( pos < 0) {
+					msg = messages.getMessage("ERR002");
+					JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					try {
+						if (utils.seEstaEjecutantoVirtualBox()) {
+							msg = messages.getMessage("ERR003");
+							JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+	 					} else {
+	 						msg = messages.getMessage("MG002");
+							JOptionPane.showMessageDialog(null, msg, "Lista actualizada", JOptionPane.INFORMATION_MESSAGE);
+						}
+					} catch (Exception err) {
+						System.out.println("Error ejecutando proceso... " + err.getMessage()); 
 					}
-				} catch (Exception err) {
-					System.out.println("Error ejecutando proceso... " + err.getMessage()); 
 				}
 			}
 		});
-	}
+		
+		refreshButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (vdiTable.getRowCount() > 0) {
+					model.setRowCount(0);
+					refreshVdiList();
+				} 
+			}
+		});
+		
 
+	}
 	
+	class RightTableCellRenderer extends DefaultTableCellRenderer {
+
+		private static final long serialVersionUID = 1L;
+
+		protected  RightTableCellRenderer() {
+			setHorizontalAlignment(JLabel.RIGHT);
+		} 
+	} 
 }
+

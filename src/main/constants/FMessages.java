@@ -1,7 +1,8 @@
 package main.constants;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 import main.functions.FilesActions;
 
@@ -10,13 +11,22 @@ public class FMessages {
 	
 	private ArrayList<FMessage> allMessages;
 	private FConstants constants = new FConstants();
-	private FilesActions fileActions = new FilesActions();;
+	private FilesActions fileActions = new FilesActions();
 	
-	public FMessages() {
+	private static FMessages messages;
+	
+	public static FMessages getInstance() {
+        if (messages == null) {
+             messages = new FMessages();
+        }
+        return messages;
+    }
+	
+	private FMessages() {
 		allMessages = new ArrayList<>();
 		readMessages();
 	}
-
+	
 	public String getMessage(String code) {
 		String returnMessage = "";
 		for (FMessage message : allMessages) {
@@ -42,7 +52,7 @@ public class FMessages {
 				allMessages.add(m);
 			}
 		} catch (Exception e) {
-			System.out.println("Archivo de mensajes no encontrado: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "Archivo de mensajes no encontrado: " + e.getMessage());
 		}
 	}
 
