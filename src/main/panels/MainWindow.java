@@ -26,11 +26,16 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
+import java.awt.Insets;
 
 public class MainWindow extends JFrame {
 
@@ -54,6 +59,12 @@ public class MainWindow extends JFrame {
 	private NumberFormat nf = NumberFormat.getInstance();
 	private final AppLogger logger = new AppLogger(MainWindow.class.getName());
 	
+	private JMenuBar menuBar;
+	private JMenu mnArchivo;
+	private JMenuItem mntmMensajesDeError;
+	private JMenuItem mntmConfiguracin;
+
+	
 	/**
 	 * Create the frame.
 	 */
@@ -62,11 +73,12 @@ public class MainWindow extends JFrame {
 		messages = FMessages.getInstance();
 		
 		createWindow();
-		
+		createMenuBar();
 		createVdiTable();
-		
 		createButtons();
+
 		getContentPane().setLayout(null);
+		
 		
 		
 		addWindowListener(new WindowAdapter() {
@@ -85,7 +97,7 @@ public class MainWindow extends JFrame {
 	
 	private void createWindow() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 610, 471);
+		setBounds(100, 100, 610, 498);
 		setResizable(false);
 		setTitle("VirtualBox Auxiliar");
 		setLocationRelativeTo(null);
@@ -95,6 +107,37 @@ public class MainWindow extends JFrame {
 		setContentPane(contentPane);
 	}
 	
+	private void createMenuBar() {
+		menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 604, 21);
+		contentPane.add(menuBar);
+		
+		mnArchivo = new JMenu("Archivo");
+		mnArchivo.setMargin(new Insets(0, 50, 0, 0));
+		menuBar.add(mnArchivo);
+		
+		mntmMensajesDeError = new JMenuItem("Mensajes de Error");
+		mnArchivo.add(mntmMensajesDeError);
+		
+		mntmConfiguracin = new JMenuItem("Configuraci\u00F3n");
+		mnArchivo.add(mntmConfiguracin);
+		
+		mntmMensajesDeError.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ErrorMessagePanel error = new ErrorMessagePanel();
+				error.setVisible(true);
+			}
+		});
+		
+		mntmConfiguracin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConfigPanel  configPanel = new ConfigPanel();
+				configPanel.setVisible(true);
+			}
+		});
+		
+	}
+	
 	private void createVdiTable() {
 		vdiTable = new JTable();
 		vdiTable.setIntercellSpacing(new Dimension(15, 1));
@@ -102,7 +145,7 @@ public class MainWindow extends JFrame {
 		scrollTable = new JScrollPane(vdiTable);
 		scrollTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollTable.setBounds(26, 11, 550, 323);
+		scrollTable.setBounds(26, 44, 550, 323);
 		contentPane.add(scrollTable, BorderLayout.CENTER);
 		
 		if (temporalPath.copyScripts()) {
@@ -114,6 +157,7 @@ public class MainWindow extends JFrame {
 			}
 		}		
 	}
+	
 	
 	private void generateLoadingFrame() {
 		LoadingFrame lf = new LoadingFrame();
@@ -174,13 +218,13 @@ public class MainWindow extends JFrame {
 	private void createButtons() {
 		shrinkButton = new JButton("Shrink");
 		contentPane.add(shrinkButton);
-		shrinkButton.setBounds(91, 375, 89, 23);
+		shrinkButton.setBounds(93, 410, 89, 23);
 		enlargeButton = new JButton("Enlarge");
 		contentPane.add(enlargeButton);
-		enlargeButton.setBounds(260, 375, 89, 23);
+		enlargeButton.setBounds(262, 410, 89, 23);
 		refreshButton = new JButton("Refresh");
 		contentPane.add(refreshButton);
-		refreshButton.setBounds(421, 375, 89, 23);
+		refreshButton.setBounds(423, 410, 89, 23);
 		
 		shrinkButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

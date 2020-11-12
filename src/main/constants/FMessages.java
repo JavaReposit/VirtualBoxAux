@@ -55,5 +55,10 @@ public class FMessages {
 			JOptionPane.showMessageDialog(null, "Archivo de mensajes no encontrado: " + e.getMessage());
 		}
 	}
+	
+	public ArrayList<FMessage> getAllMessges() {
+		
+		return allMessages; 
+	}
 
 }
