@@ -2,7 +2,7 @@ package main.constants;
 
 public class FConstants {
 	
-	private static final String DIR_VIRTUAL_BOX = "C:\\Program Files\\Oracle\\VirtualBox";
+	private static String DIR_VIRTUAL_BOX = "C:\\Program Files\\Oracle\\VirtualBox";
 	private static final String DIR_TEMPORAL = "C:\\Users\\Public\\Tmp";
 	private static final String LIST_HDDS = "C:\\users\\public\\tmp\\listHdds.bat";
 	private static final String SHRINK_HDDS = "C:\\Users\\Public\\Tmp\\shrinkHdd.bat";
@@ -36,6 +36,9 @@ public class FConstants {
 
 	public String getMESSAGES_FILE() {
 		return MESSAGES_FILE;
-	}
+	}	
 	
+	public void setvritual(String pathFile) {
+		FConstants.DIR_VIRTUAL_BOX = pathFile;
+	}
 }

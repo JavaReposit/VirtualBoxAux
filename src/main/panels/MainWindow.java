@@ -26,7 +26,6 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.ActionListener;
@@ -160,7 +159,7 @@ public class MainWindow extends JFrame {
 	
 	
 	private void generateLoadingFrame() {
-		LoadingFrame lf = new LoadingFrame();
+		LoadingPanel lf = new LoadingPanel();
 		lf.setVisible(true);
 		lf.refreshLabel();
 		lf.closeFrame();
