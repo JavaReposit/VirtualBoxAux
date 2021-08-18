@@ -12,20 +12,62 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import main.constants.FConstants;
+import main.constants.FDetectOS;
 import main.constants.FMessages;
 import main.log.AppLogger;
 
 
 public class ScriptsActions {
 	
-	private FConstants constantes = new FConstants();
-	private Process p;
+	private FConstants constantes = new FConstants();	
+	private FDetectOS detecOS = FDetectOS.getInstance();
 	private File dir = new File(constantes.getDIR_VIRTUAL_BOX());
 	private FMessages messages = FMessages.getInstance();
+	private Process p;
 	private String msg = messages.getMessage("ERR004");
 	private final AppLogger logger = new AppLogger(ScriptsActions.class.getName());
 	
 	public void listVdi() {
+		if (detecOS.getOS().equalsIgnoreCase("linux")) {
+			getLinuxVdi();
+		} else {
+			getWindowsVdi();
+		}
+	}
+	
+	private void getLinuxVdi() {
+		try {
+			final List<String> commands = new ArrayList<String>();
+			commands.add("/bin/bash");
+			commands.add(constantes.getLIST_HDDS());		
+			
+			ProcessBuilder pb = new ProcessBuilder(commands);
+			Process p = pb.start();
+			BufferedReader reader = 
+			                new BufferedReader(new InputStreamReader(p.getInputStream()));
+			StringBuilder builder = new StringBuilder();
+			String line = null;
+			while ( (line = reader.readLine()) != null) {
+				System.out.println(line);   
+				builder.append(line);
+				builder.append(System.getProperty("line.separator"));
+			}
+			try {
+				BufferedWriter bw = new BufferedWriter(new FileWriter(constantes.getDIR_TEMPORAL()+"/"+constantes.getHDDS_FILE()));
+				bw.append(builder);
+				bw.flush();
+				bw.close();
+			} catch (IOException e) {
+				logger.setWarningLog("Error guardando listado de discos: " + e.getMessage());
+			}
+		} catch (IOException e) {
+			logger.setWarningLog("Error obteniendo la lista de discos virtuales: "+e.getMessage());
+			msg = msg + "\n"+e.getMessage();
+			JOptionPane.showMessageDialog(null, msg);
+		}
+	}
+	
+	private void getWindowsVdi() {
 		try {
 //			p = Runtime.getRuntime().exec("cmd /c start /B " + constantes.getLIST_HDDS() + " &", null, dir);
 //			System.out.println("Creado listados de discos correctamente.");
@@ -88,7 +130,7 @@ public class ScriptsActions {
 			msg = msg + "\n"+e.getMessage();
 			JOptionPane.showMessageDialog(null, msg);
 		} catch (IOException e) {
-			logger.setWarningLog("Error reduciendo el tamaño del disco virtual: "+e.getMessage());
+			logger.setWarningLog("Error reduciendo el tamaï¿½o del disco virtual: "+e.getMessage());
 			msg = msg + "\n"+e.getMessage();
 			JOptionPane.showMessageDialog(null, msg);
 		}

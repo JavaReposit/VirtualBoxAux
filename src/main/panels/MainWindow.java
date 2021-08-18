@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import main.constants.FConstants;
+import main.constants.FDetectOS;
 import main.constants.FMessages;
 import main.functions.ManageTemporalPath;
 import main.functions.FilesActions;
@@ -47,6 +48,7 @@ public class MainWindow extends JFrame {
 	private ManageTemporalPath temporalPath = new ManageTemporalPath();
 	private FilesActions fileAction = new FilesActions();;
 	private FConstants constants = new FConstants();
+	private FDetectOS detectOS = FDetectOS.getInstance();
 	private Utils utils = new Utils();
 	private DefaultTableModel model;
 	private JScrollPane scrollTable;
@@ -168,7 +170,13 @@ public class MainWindow extends JFrame {
 	private void refreshVdiList() {
 		try {
 			utils.findVdi();
-			ArrayList<String> vdis = fileAction.readFile(constants.getDIR_TEMPORAL()+"\\"+constants.getHDDS_FILE());			
+			ArrayList<String> vdis;
+			if (detectOS.getOS().equalsIgnoreCase("linux")){
+				vdis = fileAction.readFile(constants.getDIR_TEMPORAL()+"/"+constants.getHDDS_FILE());
+			} else {
+				vdis = fileAction.readFile(constants.getDIR_TEMPORAL()+"\\"+constants.getHDDS_FILE());
+			}
+					
 			if (!vdis.isEmpty()) {
 				ArrayList<String> vdiList = utils.cleanListVdis(vdis);
 				if (!vdiList.isEmpty()) {
@@ -176,7 +184,7 @@ public class MainWindow extends JFrame {
 				}
 			}
 			msg = messages.getMessage("MG003");
-			JOptionPane.showMessageDialog(null, msg, "Información", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, msg, "Informaciï¿½n", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
 			msg = e.getMessage();
 			JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
@@ -187,7 +195,7 @@ public class MainWindow extends JFrame {
 	
 	private void generateVdiList() {
 		utils.findVdi();
-		ArrayList<String> vdis = fileAction.readFile(constants.getDIR_TEMPORAL()+"\\"+constants.getHDDS_FILE());			
+		ArrayList<String> vdis = fileAction.readFile(constants.getDIR_TEMPORAL()+"/"+constants.getHDDS_FILE());			
 		if (!vdis.isEmpty()) {
 			ArrayList<String> vdiList = utils.cleanListVdis(vdis);
 			if (!vdiList.isEmpty()) {

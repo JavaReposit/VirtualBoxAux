@@ -3,12 +3,15 @@ package main.constants;
 public class FConstants {
 	
 	private static String DIR_VIRTUAL_BOX = "C:\\Program Files\\Oracle\\VirtualBox";
-	private static final String DIR_TEMPORAL = "C:\\Users\\Public\\Tmp";
-	private static final String LIST_HDDS = "C:\\users\\public\\tmp\\listHdds.bat";
-	private static final String SHRINK_HDDS = "C:\\Users\\Public\\Tmp\\shrinkHdd.bat";
-	private static final String ENLARGE_HDDS = "C:\\Users\\Public\\Tmp\\enlargeHdds.bat";
+	private static final String DIR_TEMPORAL = "/tmp/VBoxAuxTemp";
+	//private static final String LIST_HDDS = "C:\\users\\public\\tmp\\listHdds.bat";
+	//private static final String SHRINK_HDDS = "C:\\Users\\Public\\Tmp\\shrinkHdd.bat";
+	//private static final String ENLARGE_HDDS = "C:\\Users\\Public\\Tmp\\enlargeHdds.bat";
+	private static final String LIST_HDDS = "/tmp/VBoxAuxTemp/listarHdds.sh";
+	private static final String SHRINK_HDDS = "/tmp/VBoxAuxTemp/encogerHdd.sh";
+	private static final String ENLARGE_HDDS = "/tmp/VBoxAuxTemp/agrandarHdds.sh";
 	private static final String HDDS_FILE = "listadoDeDiscos.txt";
-	private static final String MESSAGES_FILE = "utils\\messages.txt";
+	private static final String MESSAGES_FILE = "utils/Messages.txt";
 	
 	public String getDIR_VIRTUAL_BOX() {
 		return DIR_VIRTUAL_BOX;

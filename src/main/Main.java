@@ -14,7 +14,7 @@ public class Main {
 			MainWindow mw = new MainWindow();
 			mw.setVisible(true);
 			System.out.println();
-			logger.setInfoLog("Aplicación iniciada con éxito!!");
+			logger.setInfoLog("AplicaciÃ³n iniciada con Ã©xito!!");
 		} catch (Exception e) {
 			logger.setErrorLog("Ha habido un problema inicializando la aplicacion:\n"+e.getMessage());
 		}

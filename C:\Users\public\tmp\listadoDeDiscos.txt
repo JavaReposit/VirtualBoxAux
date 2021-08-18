@@ -1,0 +1,126 @@
+UUID:           c156e4ad-f43e-4c50-b2b1-7165ec783cfd
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/cajonDesastre/Unix Systems/cajonDesastre/cajonDesastre.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           07e3d128-de46-4a40-bca7-f24bb0823ec7
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/Windows10/Windows/Windows10/Windows10.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           60a9c0e7-3436-43c7-ac4d-eb66a8879b57
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/webserver01/Unix Systems/webserver01/webserver01.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           dc1f1c24-f193-4892-9f35-ab45d387e20a
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/server01/Unix Systems/server01/server01.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           fe7b0746-5acf-4d15-af01-5f81ee2c6452
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/pretomcat02/Unix Systems/pretomcat02/pretomcat02.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           cb321d42-997d-4999-bc85-080c20b119cb
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/pretomcat01/Unix Systems/pretomcat01/pretomcat.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           1afddc34-fab9-4a5a-8c9a-5280b540e3d7
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/predocker02/Unix Systems/predocker02/predocker02.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           85256d2f-aa29-4beb-adfe-060226051ab2
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/predocker01/Unix Systems/predocker01/predocker01.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           dc2df053-d21d-4e94-8e6f-9f5e21ce2baa
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/KaliLinux/Unix Systems/Kali-Linux-2021.1-vbox-amd64/kali-linux-2021.1-vbox-amd64-disk001.vdi
+Storage format: vdi
+Capacity:       81920 MBytes
+Encryption:     disabled
+
+UUID:           1fe4d01f-2719-4176-9f7f-8cb725335280
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/Kali/Kali.vdi
+Storage format: VDI
+Capacity:       30720 MBytes
+Encryption:     disabled
+
+UUID:           8cdf9a50-7717-49cb-847b-7c125e989452
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/Garuda/Unix Systems/Garuda/Garuda.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           c9216c0b-c92f-486a-9246-4fc9c903505f
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/Gale-Deb/Gale-Deb.vdi
+Storage format: VDI
+Capacity:       51200 MBytes
+Encryption:     disabled
+
+UUID:           fc07ec5b-7a2b-4979-90b7-11911a34cf53
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/emule/share.vdi
+Storage format: VDI
+Capacity:       102400 MBytes
+Encryption:     disabled
+
+UUID:           670bfdc1-3e6d-43cd-9b10-ccaa8c9461a6
+Parent UUID:    base
+State:          created
+Type:           normal (base)
+Location:       /mnt/VMs/VirtualBox/carol/carol-W7.vdi
+Storage format: VDI
+Capacity:       130048 MBytes
+Encryption:     disabled
+

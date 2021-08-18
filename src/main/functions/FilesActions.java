@@ -3,6 +3,7 @@ package main.functions;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -36,7 +37,7 @@ public class FilesActions {
 				i++;
 			}
 			if (fileLines.size() > 0) {
-				logger.setInfoLog("líneas totales leidas: "+String.valueOf(i));
+				logger.setInfoLog("lÃ­neas totales leidas: "+String.valueOf(i));
 				return fileLines;
 			} else {
 				return null;
@@ -108,5 +109,5 @@ public class FilesActions {
 				
 		return size;
 	}
-
+	
 }
